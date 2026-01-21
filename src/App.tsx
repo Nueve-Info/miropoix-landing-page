@@ -563,9 +563,9 @@ export default function App() {
                   <Reveal delay={0.3}>
                     <div className="relative">
                       {/* Vimeo video */}
-                      <div className="relative overflow-hidden rounded-lg" style={{ paddingTop: '75%', transform: 'scale(1.1)' }}>
+                      <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
                         <iframe
-                          src="https://player.vimeo.com/video/1156864987?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1"
+                          src="https://player.vimeo.com/video/1156897711?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
                           frameBorder="0"
                           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                           referrerPolicy="strict-origin-when-cross-origin"
@@ -576,7 +576,7 @@ export default function App() {
                             width: '100%',
                             height: '100%'
                           }}
-                          title="two-phones"
+                          title="Dribbble-shot"
                         />
                       </div>
                     </div>
