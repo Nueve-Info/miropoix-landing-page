@@ -9,7 +9,13 @@
  */
 
 import { ListTodo, CheckCircle, Send, ArrowRight, Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import createOrderMobilePortrait from "../assets/create-order-mobile-portrait.png";
+import createOrderMobileLeft from "../assets/create-order-mobile-left.png";
+import dashboardMobilePortrait from "../assets/dashboard-mobile-portrait.png";
+import invoicePortrait from "../assets/incoice-portrait.png";
+import handAsset from "../assets/hand-asset.png";
+import logoBrandBackground from "../assets/logo-brand-background.svg";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -210,9 +216,9 @@ const faqs = [
 ];
 
 // Section wrapper
-function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
-    <section className={className}>
+    <section id={id} className={className}>
       {children}
     </section>
   );
@@ -221,7 +227,7 @@ function Section({ children, className = "" }: { children: React.ReactNode; clas
 // Step card component
 function StepCard({ item }: { item: typeof steps[0] }) {
   return (
-    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 relative">
+    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 relative flex flex-col h-full">
       <div className="absolute top-6 right-6 v6-display text-5xl text-[var(--v6-sand)]">
         {item.step}
       </div>
@@ -230,8 +236,69 @@ function StepCard({ item }: { item: typeof steps[0] }) {
           <item.icon className="w-6 h-6" strokeWidth={1.5} />
         </div>
       </div>
-      <h3 className="v6-display text-xl mb-3">{item.title}</h3>
-      <p className="v6-serif text-[var(--v6-muted)] leading-relaxed">{item.description}</p>
+      <div className="flex-1 flex flex-col">
+        <h3 className="v6-display text-xl mb-3">{item.title}</h3>
+        <p className="v6-serif text-[var(--v6-muted)] leading-relaxed mb-6">{item.description}</p>
+      </div>
+      {/* Video embed for "Capture Needs Fast" and "Chef Approves" steps, placeholder for others */}
+      {item.step === "01" ? (
+        <div className="w-full aspect-[4/3] bg-[var(--v6-cream)] border border-[var(--v6-border)] relative overflow-hidden">
+          <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <iframe
+              src="https://player.vimeo.com/video/1156876234?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }}
+              title="add to order"
+            />
+          </div>
+        </div>
+      ) : item.step === "02" ? (
+        <div className="w-full aspect-[4/3] bg-[var(--v6-cream)] border border-[var(--v6-border)] relative overflow-hidden">
+          <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <iframe
+              src="https://player.vimeo.com/video/1156864909?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }}
+              title="notifications"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="w-full aspect-[4/3] bg-[var(--v6-cream)] border border-[var(--v6-border)] relative overflow-hidden">
+          <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <iframe
+              src="https://player.vimeo.com/video/1156879255?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }}
+              title="sent"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -252,12 +319,41 @@ function FeatureSection({ feature, index }: { feature: typeof features[0]; index
         </p>
       </div>
       <div className={`md:col-span-6 ${feature.imagePosition === "right" ? "md:col-start-7" : ""}`}>
-        <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] aspect-square flex items-center justify-center relative group">
+        <div className="bg-[var(--v6-warm-white)] aspect-square flex items-center justify-center relative group overflow-hidden">
           <div className="absolute -bottom-3 -right-3 w-full h-full border-2 border-[var(--v6-terracotta)] -z-10" />
-          <div className="text-center">
-            <div className="v6-mono text-xs text-[var(--v6-terracotta)] mb-2">// {feature.imageLabel.toLowerCase().replace(/ /g, '_')}</div>
-            <span className="v6-display text-[var(--v6-muted)]">{feature.imageLabel}</span>
-          </div>
+          {index === 0 ? (
+            <div className="w-full h-full absolute inset-0">
+              <iframe
+                src="https://player.vimeo.com/video/1156864931?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="w-full h-full"
+                title="phone-notification"
+              />
+            </div>
+          ) : index === 1 ? (
+            <div className="w-full h-full absolute inset-0">
+              <img
+                src={createOrderMobileLeft}
+                alt={feature.imageLabel}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          ) : index === 2 ? (
+            <div className="w-full h-full absolute inset-0">
+              <img
+                src={invoicePortrait}
+                alt={feature.imageLabel}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          ) : (
+            <div className="text-center">
+              <div className="v6-mono text-xs text-[var(--v6-terracotta)] mb-2">// {feature.imageLabel.toLowerCase().replace(/ /g, '_')}</div>
+              <span className="v6-display text-[var(--v6-muted)]">{feature.imageLabel}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -338,6 +434,21 @@ function FAQItem({ faq }: { faq: typeof faqs[0] }) {
 }
 
 export default function App() {
+  // Load Vimeo player script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://player.vimeo.com/api/player.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup script on unmount
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
   return (
     <>
       <style>{styles}</style>
@@ -351,21 +462,29 @@ export default function App() {
           <nav className="flex items-center justify-between py-3 px-4 md:px-8 lg:px-12 border-b border-[var(--v6-border)] bg-white">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-[var(--v6-charcoal)] flex items-center justify-center">
-                <span className="v6-display text-[var(--v6-cream)] text-lg">M</span>
+                <img src={logoBrandBackground} alt="Mirepoix logo" className="w-full h-full object-contain" />
               </div>
               <span className="v6-display text-xl tracking-wide">Mirepoix</span>
             </div>
-            <button className="bg-[var(--v6-terracotta)] text-white px-6 py-3 v6-display text-sm tracking-wider flex items-center gap-2">
+            <button
+              className="bg-[var(--v6-terracotta)] text-white px-6 py-3 v6-display text-sm tracking-wider flex items-center gap-2"
+              onClick={() => {
+                const pricingSection = document.getElementById('pricing');
+                if (pricingSection) {
+                  pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+            >
               Start Trial <ArrowRight className="w-4 h-4" />
             </button>
           </nav>
 
           {/* Hero content */}
-          <div className="flex-1 flex items-center px-4 md:px-8 lg:px-12 py-6 md:py-8">
+          <div className="flex-1 flex items-center px-4 md:px-8 lg:px-12 py-12 md:py-16">
             <div className="max-w-7xl mx-auto w-full">
               <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 {/* Left: Text */}
-                <div className="lg:col-span-7">
+                <div className="lg:col-span-6">
                   <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
                     Kitchen Supply Management
                   </div>
@@ -404,35 +523,24 @@ export default function App() {
                 </div>
 
                 {/* Right: App mockup */}
-                <div className="lg:col-span-5">
+                <div className="lg:col-span-6">
                   <div className="relative">
-                    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 aspect-[3/4] flex flex-col relative">
-                      {/* Decorative offset border */}
-                      <div className="absolute -top-3 -right-3 w-full h-full border-2 border-[var(--v6-charcoal)] -z-10" />
-
-                      {/* Placeholder na zdjęcie/mockup telefonu */}
-                      <div className="flex-1 flex items-center justify-center border-2 border-dashed border-[var(--v6-border)] bg-[var(--v6-cream)] relative overflow-hidden">
-                        <div className="text-center p-8">
-                          <div className="w-16 h-16 mx-auto mb-4 border-2 border-[var(--v6-muted)] rounded-lg flex items-center justify-center">
-                            <svg
-                              className="w-8 h-8 text-[var(--v6-muted)]"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                              />
-                            </svg>
-                          </div>
-                          <div className="v6-mono text-sm text-[var(--v6-muted)]">
-                            Placeholder na zdjęcie<br/>mockupu telefonu
-                          </div>
-                        </div>
-                      </div>
+                    {/* Vimeo video */}
+                    <div className="relative overflow-hidden rounded-lg" style={{ paddingTop: '75%', transform: 'scale(1.1)' }}>
+                      <iframe
+                        src="https://player.vimeo.com/video/1156864987?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1"
+                        frameBorder="0"
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%'
+                        }}
+                        title="two-phones"
+                      />
                     </div>
                   </div>
                 </div>
@@ -447,7 +555,7 @@ export default function App() {
         </section>
 
         {/* ===== PROBLEM ===== */}
-        <Section className="v6-section bg-[var(--v6-charcoal)] text-[var(--v6-cream)]">
+        <Section className="v6-section bg-[var(--v6-charcoal)] text-[var(--v6-cream)] py-32 md:py-40 lg:py-48">
           <div className="max-w-7xl mx-auto">
             <div className="mb-16 md:mb-20">
               <h2 className="v6-display text-3xl md:text-5xl lg:text-6xl leading-tight">
@@ -472,10 +580,13 @@ export default function App() {
                     The service is over, but you still need to order supplies. 11 PM is not the time to run around with pen and paper. Use Mirepoix.
                   </p>
                 </div>
-                <div className="order-first md:order-last">
-                  <div className="bg-[var(--v6-cream)]/5 border border-[var(--v6-cream)]/10 aspect-[4/3] flex flex-col items-center justify-center p-8 relative">
-                    <div className="absolute top-4 left-4 v6-mono text-xs text-[var(--v6-terracotta)]">// notification.view</div>
-                    <span className="v6-display text-[var(--v6-cream)]/40 text-lg">Items added via notification</span>
+                <div>
+                  <div className="aspect-[4/3] flex flex-col items-center justify-center relative">
+                    <img
+                      src={createOrderMobilePortrait}
+                      alt="Create order mobile view"
+                      className="w-full h-full object-contain scale-150"
+                    />
                   </div>
                 </div>
               </div>
@@ -494,9 +605,12 @@ export default function App() {
                   </p>
                 </div>
                 <div>
-                  <div className="bg-[var(--v6-cream)]/5 border border-[var(--v6-cream)]/10 aspect-[4/3] flex flex-col items-center justify-center p-8 relative">
-                    <div className="absolute top-4 left-4 v6-mono text-xs text-[var(--v6-terracotta)]">// approve.screen</div>
-                    <span className="v6-display text-[var(--v6-cream)]/40 text-lg">Approval list screen</span>
+                  <div className="aspect-[4/3] flex flex-col items-center justify-center relative">
+                    <img
+                      src={dashboardMobilePortrait}
+                      alt="Approval list screen mobile view"
+                      className="w-full h-full object-contain scale-150"
+                    />
                   </div>
                 </div>
               </div>
@@ -547,7 +661,7 @@ export default function App() {
         </Section>
 
         {/* ===== PRICING ===== */}
-        <Section className="v6-section v6-grid-bg">
+        <Section id="pricing" className="v6-section v6-grid-bg">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
               <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
@@ -604,7 +718,13 @@ export default function App() {
 
               <div className="order-first md:order-last">
                 <div className="bg-white/10 border border-white/20 aspect-[4/3] flex items-center justify-center relative">
-                  <div className="absolute -top-3 -left-3 w-full h-full border-2 border-white/20" />
+                  <div className="absolute -top-3 -left-3 w-full h-full border-2 border-white/20">
+                    <img
+                      src={handAsset}
+                      alt="Hand holding phone"
+                      className="w-full h-full object-contain scale-150"
+                    />
+                  </div>
                   <span className="v6-display text-white/50 text-xl">App screenshot</span>
                 </div>
               </div>
@@ -637,7 +757,7 @@ export default function App() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-[var(--v6-charcoal)] flex items-center justify-center">
-                <span className="v6-display text-[var(--v6-cream)] text-sm">M</span>
+                <img src={logoBrandBackground} alt="Mirepoix logo" className="w-full h-full object-contain" />
               </div>
               <span className="v6-display text-lg">Mirepoix</span>
             </div>
