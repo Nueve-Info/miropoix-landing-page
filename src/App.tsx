@@ -9,7 +9,14 @@
  */
 
 import { ListTodo, CheckCircle, Send, ArrowRight, Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import createOrderMobilePortrait from "../assets/create-order-mobile-portrait.png";
+import createOrderMobileLeft from "../assets/create-order-mobile-left.png";
+import dashboardMobilePortrait from "../assets/dashboard-mobile-portrait.png";
+import invoicePortrait from "../assets/incoice-portrait.png";
+import handAsset from "../assets/hand-asset.png";
+import logoBrandBackground from "../assets/logo-brand-background.svg";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -170,7 +177,7 @@ const features = [
 const plans = [
   {
     name: "SOLO",
-    price: "$9",
+    price: "$1",
     period: "/mo",
     description: "For the owner-operator",
     features: ["Unlimited Suppliers", "WhatsApp/Email Integration", "Basic Product Lists"],
@@ -178,7 +185,7 @@ const plans = [
   },
   {
     name: "SMALL TEAM",
-    price: "$29",
+    price: "$10",
     period: "/mo",
     description: "For standard bistro kitchens",
     features: ["Approval Workflows", "Up to 5 Staff Members", "Delivery Scheduling"],
@@ -186,7 +193,7 @@ const plans = [
   },
   {
     name: "LARGE TEAMS",
-    price: "$59",
+    price: "$30",
     period: "/mo",
     description: "For high-volume or multi-site",
     features: ["Advanced Price Alerts", "Unlimited Staff", "Full Invoice Archive"],
@@ -209,10 +216,26 @@ const faqs = [
   },
 ];
 
-// Section wrapper
-function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+// Helper component for reveal animations
+function Reveal({ children, delay = 0, className = "", width = "100%" }: { children: React.ReactNode; delay?: number; className?: string; width?: "fit-content" | "100%" }) {
   return (
-    <section className={className}>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      style={{ width }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// Section wrapper
+function Section({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
+  return (
+    <section id={id} className={className}>
       {children}
     </section>
   );
@@ -221,7 +244,7 @@ function Section({ children, className = "" }: { children: React.ReactNode; clas
 // Step card component
 function StepCard({ item }: { item: typeof steps[0] }) {
   return (
-    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 relative">
+    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 relative flex flex-col h-full">
       <div className="absolute top-6 right-6 v6-display text-5xl text-[var(--v6-sand)]">
         {item.step}
       </div>
@@ -230,8 +253,69 @@ function StepCard({ item }: { item: typeof steps[0] }) {
           <item.icon className="w-6 h-6" strokeWidth={1.5} />
         </div>
       </div>
-      <h3 className="v6-display text-xl mb-3">{item.title}</h3>
-      <p className="v6-serif text-[var(--v6-muted)] leading-relaxed">{item.description}</p>
+      <div className="flex-1 flex flex-col">
+        <h3 className="v6-display text-xl mb-3">{item.title}</h3>
+        <p className="v6-serif text-[var(--v6-muted)] leading-relaxed mb-6">{item.description}</p>
+      </div>
+      {/* Video embed for "Capture Needs Fast" and "Chef Approves" steps, placeholder for others */}
+      {item.step === "01" ? (
+        <div className="w-full aspect-[4/3] bg-[var(--v6-cream)] border border-[var(--v6-border)] relative overflow-hidden">
+          <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <iframe
+              src="https://player.vimeo.com/video/1156876234?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }}
+              title="add to order"
+            />
+          </div>
+        </div>
+      ) : item.step === "02" ? (
+        <div className="w-full aspect-[4/3] bg-[var(--v6-cream)] border border-[var(--v6-border)] relative overflow-hidden">
+          <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <iframe
+              src="https://player.vimeo.com/video/1156864909?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }}
+              title="notifications"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="w-full aspect-[4/3] bg-[var(--v6-cream)] border border-[var(--v6-border)] relative overflow-hidden">
+          <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+            <iframe
+              src="https://player.vimeo.com/video/1156879255?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%'
+              }}
+              title="sent"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -241,24 +325,57 @@ function FeatureSection({ feature, index }: { feature: typeof features[0]; index
   return (
     <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-center">
       <div className={`md:col-span-5 ${feature.imagePosition === "right" ? "" : "md:order-last md:col-start-8"}`}>
-        <div className="v6-display text-6xl text-[var(--v6-sand)]">
-          {String(index + 1).padStart(2, '0')}
-        </div>
-        <h3 className="v6-display text-xl md:text-2xl lg:text-3xl mb-4">
-          {feature.title}
-        </h3>
-        <p className="v6-serif text-[var(--v6-muted)] text-lg leading-relaxed">
-          {feature.description}
-        </p>
+        <Reveal delay={0.1}>
+          <div className="v6-display text-6xl text-[var(--v6-sand)]">
+            {String(index + 1).padStart(2, '0')}
+          </div>
+          <h3 className="v6-display text-xl md:text-2xl lg:text-3xl mb-4">
+            {feature.title}
+          </h3>
+          <p className="v6-serif text-[var(--v6-muted)] text-lg leading-relaxed">
+            {feature.description}
+          </p>
+        </Reveal>
       </div>
       <div className={`md:col-span-6 ${feature.imagePosition === "right" ? "md:col-start-7" : ""}`}>
-        <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] aspect-square flex items-center justify-center relative group">
-          <div className="absolute -bottom-3 -right-3 w-full h-full border-2 border-[var(--v6-terracotta)] -z-10" />
-          <div className="text-center">
-            <div className="v6-mono text-xs text-[var(--v6-terracotta)] mb-2">// {feature.imageLabel.toLowerCase().replace(/ /g, '_')}</div>
-            <span className="v6-display text-[var(--v6-muted)]">{feature.imageLabel}</span>
+        <Reveal delay={0.2}>
+          <div className="bg-[var(--v6-warm-white)] aspect-square flex items-center justify-center relative group overflow-hidden">
+            <div className="absolute -bottom-3 -right-3 w-full h-full border-2 border-[var(--v6-terracotta)] -z-10" />
+            {index === 0 ? (
+              <div className="w-full h-full absolute inset-0">
+                <iframe
+                  src="https://player.vimeo.com/video/1156864931?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="w-full h-full"
+                  title="phone-notification"
+                />
+              </div>
+            ) : index === 1 ? (
+              <div className="w-full h-full absolute inset-0">
+                <img
+                  src={createOrderMobileLeft}
+                  alt={feature.imageLabel}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ) : index === 2 ? (
+              <div className="w-full h-full absolute inset-0">
+                <img
+                  src={invoicePortrait}
+                  alt={feature.imageLabel}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="v6-mono text-xs text-[var(--v6-terracotta)] mb-2">// {feature.imageLabel.toLowerCase().replace(/ /g, '_')}</div>
+                <span className="v6-display text-[var(--v6-muted)]">{feature.imageLabel}</span>
+              </div>
+            )}
           </div>
-        </div>
+        </Reveal>
       </div>
     </div>
   );
@@ -301,8 +418,8 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
       <button
         className={`w-full py-4 v6-display text-sm tracking-wider transition-colors ${
           plan.popular
-            ? "bg-[var(--v6-terracotta)] text-white"
-            : "bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)]"
+            ? "bg-[var(--v6-terracotta)] text-white hover:bg-[var(--v6-terracotta-light)]"
+            : "bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)] hover:bg-[var(--v6-charcoal)] hover:text-white"
         }`}
       >
         Start free trial
@@ -324,20 +441,43 @@ function FAQItem({ faq }: { faq: typeof faqs[0] }) {
         <h3 className="v6-display text-lg md:text-xl">
           "{faq.question}"
         </h3>
-        <div style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}>
+        <motion.div
+          animate={{ rotate: isOpen ? 45 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
           <Plus className="w-5 h-5 text-[var(--v6-terracotta)] flex-shrink-0" />
-        </div>
+        </motion.div>
       </div>
-      {isOpen && (
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="overflow-hidden"
+      >
         <div className="mt-4">
           <p className="v6-serif text-[var(--v6-muted)] leading-relaxed">{faq.answer}</p>
         </div>
-      )}
+      </motion.div>
     </div>
   );
 }
 
 export default function App() {
+  // Load Vimeo player script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://player.vimeo.com/api/player.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      // Cleanup script on unmount
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
   return (
     <>
       <style>{styles}</style>
@@ -351,90 +491,96 @@ export default function App() {
           <nav className="flex items-center justify-between py-3 px-4 md:px-8 lg:px-12 border-b border-[var(--v6-border)] bg-white">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-[var(--v6-charcoal)] flex items-center justify-center">
-                <span className="v6-display text-[var(--v6-cream)] text-lg">M</span>
+                <img src={logoBrandBackground} alt="Mirepoix logo" className="w-full h-full object-contain" />
               </div>
               <span className="v6-display text-xl tracking-wide">Mirepoix</span>
             </div>
-            <button className="bg-[var(--v6-terracotta)] text-white px-6 py-3 v6-display text-sm tracking-wider flex items-center gap-2">
+            <button
+              className="bg-[var(--v6-terracotta)] text-white px-6 py-3 v6-display text-sm tracking-wider flex items-center gap-2 hover:bg-[var(--v6-terracotta-light)] transition-colors"
+              onClick={() => {
+                const pricingSection = document.getElementById('pricing');
+                if (pricingSection) {
+                  pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+            >
               Start Trial <ArrowRight className="w-4 h-4" />
             </button>
           </nav>
 
           {/* Hero content */}
-          <div className="flex-1 flex items-center px-4 md:px-8 lg:px-12 py-6 md:py-8">
+          <div className="flex-1 flex items-center px-4 md:px-8 lg:px-12 py-12 md:py-16">
             <div className="max-w-7xl mx-auto w-full">
               <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 {/* Left: Text */}
-                <div className="lg:col-span-7">
-                  <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
-                    Kitchen Supply Management
-                  </div>
+                <div className="lg:col-span-6">
+                  <Reveal>
+                    <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
+                      Kitchen Supply Management
+                    </div>
 
-                  <h1 className="v6-giant-text mb-6">
-                    Never forget<br />
-                    the{" "}
-                    <span className="text-[var(--v6-terracotta)]">
-                      shallots
-                    </span>
-                    <br />
-                    <span className="relative inline-block">
-                      again.
-                      <span className="absolute top-1/2 left-0 w-full h-1 bg-[var(--v6-terracotta)] -translate-y-1/2" />
-                    </span>
-                  </h1>
+                    <h1 className="v6-giant-text mb-6">
+                      Never forget<br />
+                      the{" "}
+                      <span className="text-[var(--v6-terracotta)]">
+                        shallots
+                      </span>
+                      <br />
+                      <span className="relative inline-block">
+                        again.
+                        <motion.span
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+                          className="absolute top-1/2 left-0 w-full h-1 bg-[var(--v6-terracotta)] -translate-y-1/2 origin-left"
+                        />
+                      </span>
+                    </h1>
 
-                  <p className="v6-serif text-lg md:text-xl text-[var(--v6-muted)] max-w-xl mb-6 leading-relaxed">
-                    Mirepoix is the supply management app that moves your kitchen from messy WhatsApp threads to a structured workflow.
-                  </p>
+                    <p className="v6-serif text-lg md:text-xl text-[var(--v6-muted)] max-w-xl mb-6 leading-relaxed">
+                      Mirepoix is the supply management app that moves your kitchen from messy WhatsApp threads to a structured workflow.
+                    </p>
 
-                  {/* Social proof ticket */}
-                  <div className="v6-ticket inline-block px-6 py-3 mb-6">
-                    <span className="text-[var(--v6-muted)] text-sm">ORDER #</span>
-                    <span className="text-[var(--v6-charcoal)] font-medium ml-2">600+ kitchens served</span>
-                  </div>
+                    {/* Social proof ticket */}
+                    <div className="v6-ticket inline-block px-6 py-3 mb-6">
+                      <span className="text-[var(--v6-muted)] text-sm">ORDER #</span>
+                      <span className="text-[var(--v6-charcoal)] font-medium ml-2">600+ kitchens served</span>
+                    </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-[var(--v6-terracotta)] text-white px-8 py-4 v6-display text-sm tracking-wider">
-                      Start 7-Day Free Trial
-                    </button>
-                    <button className="bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)] px-8 py-4 v6-display text-sm tracking-wider">
-                      Book a Demo
-                    </button>
-                  </div>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button className="bg-[var(--v6-terracotta)] text-white px-8 py-4 v6-display text-sm tracking-wider hover:bg-[var(--v6-terracotta-light)] transition-colors">
+                        Start 7-Day Free Trial
+                      </button>
+                      <button className="bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)] px-8 py-4 v6-display text-sm tracking-wider hover:bg-[var(--v6-charcoal)] hover:text-white transition-colors">
+                        Book a Demo
+                      </button>
+                    </div>
+                  </Reveal>
                 </div>
 
                 {/* Right: App mockup */}
-                <div className="lg:col-span-5">
-                  <div className="relative">
-                    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 aspect-[3/4] flex flex-col relative">
-                      {/* Decorative offset border */}
-                      <div className="absolute -top-3 -right-3 w-full h-full border-2 border-[var(--v6-charcoal)] -z-10" />
-
-                      {/* Placeholder na zdjęcie/mockup telefonu */}
-                      <div className="flex-1 flex items-center justify-center border-2 border-dashed border-[var(--v6-border)] bg-[var(--v6-cream)] relative overflow-hidden">
-                        <div className="text-center p-8">
-                          <div className="w-16 h-16 mx-auto mb-4 border-2 border-[var(--v6-muted)] rounded-lg flex items-center justify-center">
-                            <svg 
-                              className="w-8 h-8 text-[var(--v6-muted)]" 
-                              fill="none" 
-                              stroke="currentColor" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round" 
-                                strokeWidth={2} 
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" 
-                              />
-                            </svg>
-                          </div>
-                          <div className="v6-mono text-sm text-[var(--v6-muted)]">
-                            Placeholder na zdjęcie<br/>mockupu telefonu
-                          </div>
-                        </div>
+                <div className="lg:col-span-6">
+                  <Reveal delay={0.3}>
+                    <div className="relative">
+                      {/* Vimeo video */}
+                      <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+                        <iframe
+                          src="https://player.vimeo.com/video/1156897711?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
+                          frameBorder="0"
+                          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%'
+                          }}
+                          title="Dribbble-shot"
+                        />
                       </div>
                     </div>
-                  </div>
+                  </Reveal>
                 </div>
               </div>
             </div>
@@ -447,13 +593,15 @@ export default function App() {
         </section>
 
         {/* ===== PROBLEM ===== */}
-        <Section className="v6-section bg-[var(--v6-charcoal)] text-[var(--v6-cream)]">
+        <Section className="v6-section bg-[var(--v6-charcoal)] text-[var(--v6-cream)] py-32 md:py-40 lg:py-48">
           <div className="max-w-7xl mx-auto">
             <div className="mb-16 md:mb-20">
-              <h2 className="v6-display text-3xl md:text-5xl lg:text-6xl leading-tight">
-                Your kitchen is fast.<br/>
-                <span className="text-[var(--v6-terracotta)]">Your ordering process is stuck in the 90s.</span>
-              </h2>
+              <Reveal>
+                <h2 className="v6-display text-3xl md:text-5xl lg:text-6xl leading-tight">
+                  Your kitchen is fast.<br/>
+                  <span className="text-[var(--v6-terracotta)]">Your ordering process is stuck in the 90s.</span>
+                </h2>
+              </Reveal>
             </div>
 
             <div className="h-px bg-[var(--v6-cream)]/20 mb-16" />
@@ -461,43 +609,61 @@ export default function App() {
             <div className="space-y-20 md:space-y-28">
               {/* Block 1 */}
               <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-                <div>
-                  <div className="v6-display text-6xl text-[var(--v6-cream)]/20">
-                    01
-                  </div>
-                  <h3 className="v6-display text-2xl md:text-3xl mb-4">
-                    Stop losing time on late night supply lists
-                  </h3>
-                  <p className="v6-serif text-[var(--v6-cream)]/70 text-lg leading-relaxed">
-                    The service is over, but you still need to order supplies. 11 PM is not the time to run around with pen and paper. Use Mirepoix.
-                  </p>
+                <div className="mb-8 md:mb-0">
+                  <Reveal delay={0.1}>
+                    <div className="v6-display text-6xl text-[var(--v6-cream)]/20">
+                      01
+                    </div>
+                    <h3 className="v6-display text-2xl md:text-3xl mb-4">
+                      Stop losing time on late night supply lists
+                    </h3>
+                    <p className="v6-serif text-[var(--v6-cream)]/70 text-lg leading-relaxed">
+                      The service is over, but you still need to order supplies. 11 PM is not the time to run around with pen and paper. Use Mirepoix.
+                    </p>
+                  </Reveal>
                 </div>
-                <div className="order-first md:order-last">
-                  <div className="bg-[var(--v6-cream)]/5 border border-[var(--v6-cream)]/10 aspect-[4/3] flex flex-col items-center justify-center p-8 relative">
-                    <div className="absolute top-4 left-4 v6-mono text-xs text-[var(--v6-terracotta)]">// notification.view</div>
-                    <span className="v6-display text-[var(--v6-cream)]/40 text-lg">Items added via notification</span>
-                  </div>
+                <div className="flex items-center justify-center w-full">
+                  <Reveal delay={0.3} className="w-full">
+                    <div className="w-full max-w-sm md:max-w-none md:w-full flex items-center justify-center relative">
+                      <div className="w-full md:aspect-[4/3] flex items-center justify-center">
+                        <img
+                          src={createOrderMobilePortrait}
+                          alt="Create order mobile view"
+                          className="w-full h-auto object-contain md:h-full md:w-auto md:object-contain"
+                        />
+                      </div>
+                    </div>
+                  </Reveal>
                 </div>
               </div>
 
               {/* Block 2 */}
               <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-                <div className="md:order-last">
-                  <div className="v6-display text-6xl text-[var(--v6-cream)]/20">
-                    02
-                  </div>
-                  <h3 className="v6-display text-2xl md:text-3xl mb-4">
-                    WhatsApp chaos ends now
-                  </h3>
-                  <p className="v6-serif text-[var(--v6-cream)]/70 text-lg leading-relaxed">
-                    Stop scrolling through group chats to find that one message about the missing tomatoes. One organized list, always accessible.
-                  </p>
+                <div className="md:order-last mb-8 md:mb-0">
+                  <Reveal delay={0.1}>
+                    <div className="v6-display text-6xl text-[var(--v6-cream)]/20">
+                      02
+                    </div>
+                    <h3 className="v6-display text-2xl md:text-3xl mb-4">
+                      WhatsApp chaos ends now
+                    </h3>
+                    <p className="v6-serif text-[var(--v6-cream)]/70 text-lg leading-relaxed">
+                      Stop scrolling through group chats to find that one message about the missing tomatoes. One organized list, always accessible.
+                    </p>
+                  </Reveal>
                 </div>
-                <div>
-                  <div className="bg-[var(--v6-cream)]/5 border border-[var(--v6-cream)]/10 aspect-[4/3] flex flex-col items-center justify-center p-8 relative">
-                    <div className="absolute top-4 left-4 v6-mono text-xs text-[var(--v6-terracotta)]">// approve.screen</div>
-                    <span className="v6-display text-[var(--v6-cream)]/40 text-lg">Approval list screen</span>
-                  </div>
+                <div className="flex items-center justify-center w-full">
+                  <Reveal delay={0.3} className="w-full">
+                    <div className="w-full max-w-sm md:max-w-none md:w-full flex items-center justify-center relative">
+                      <div className="w-full md:aspect-[4/3] flex items-center justify-center">
+                        <img
+                          src={dashboardMobilePortrait}
+                          alt="Approval list screen mobile view"
+                          className="w-full h-auto object-contain md:h-full md:w-auto md:object-contain"
+                        />
+                      </div>
+                    </div>
+                  </Reveal>
                 </div>
               </div>
             </div>
@@ -510,17 +676,21 @@ export default function App() {
 
           <div className="max-w-7xl mx-auto">
             <div className="mb-12 md:mb-16">
-              <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
-                Workflow
-              </div>
-              <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl">
-                3 steps to control your supply list.
-              </h2>
+              <Reveal>
+                <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
+                  Workflow
+                </div>
+                <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl">
+                  3 steps to control your supply list.
+                </h2>
+              </Reveal>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 md:gap-8">
               {steps.map((item, i) => (
-                <StepCard key={i} item={item} />
+                <Reveal key={i} delay={i * 0.2}>
+                  <StepCard item={item} />
+                </Reveal>
               ))}
             </div>
           </div>
@@ -530,12 +700,14 @@ export default function App() {
         <Section className="v6-section bg-[var(--v6-warm-white)]">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 md:mb-20">
-              <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
-                Features
-              </div>
-              <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl">
-                That's how you simplify supply lists
-              </h2>
+              <Reveal>
+                <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
+                  Features
+                </div>
+                <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl">
+                  That's how you simplify supply lists
+                </h2>
+              </Reveal>
             </div>
 
             <div className="space-y-24 md:space-y-32">
@@ -547,23 +719,27 @@ export default function App() {
         </Section>
 
         {/* ===== PRICING ===== */}
-        <Section className="v6-section v6-grid-bg">
+        <Section id="pricing" className="v6-section v6-grid-bg">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
-              <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
-                Pricing
-              </div>
-              <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl mb-4">
-                Match your plan
-              </h2>
-              <p className="v6-serif text-[var(--v6-muted)] text-lg max-w-2xl mx-auto">
-                Choose the plan that fits your kitchen. All plans include a 7-day free trial.
-              </p>
+              <Reveal>
+                <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
+                  Pricing
+                </div>
+                <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl mb-4">
+                  Match your plan
+                </h2>
+                <p className="v6-serif text-[var(--v6-muted)] text-lg max-w-2xl mx-auto">
+                  Choose the plan that fits your kitchen. All plans include a 7-day free trial.
+                </p>
+              </Reveal>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {plans.map((plan, index) => (
-                <PricingCard key={index} plan={plan} />
+                <Reveal key={index} delay={index * 0.1}>
+                  <PricingCard plan={plan} />
+                </Reveal>
               ))}
             </div>
           </div>
@@ -577,36 +753,46 @@ export default function App() {
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="grid md:grid-cols-2 gap-12 items-end">
               <div>
-                <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl mb-6 leading-tight">
-                  Ready to simplify your kitchen ordering?
-                </h2>
-                <p className="v6-serif text-xl text-white/80 mb-10 leading-relaxed">
-                  Join 600+ restaurants already saving hours every week. Start your free trial today — no credit card required.
-                </p>
+                <Reveal>
+                  <h2 className="v6-display text-3xl md:text-4xl lg:text-5xl mb-6 leading-tight">
+                    Ready to simplify your kitchen ordering?
+                  </h2>
+                  <p className="v6-serif text-xl text-white/80 mb-10 leading-relaxed">
+                    Join 600+ restaurants already saving hours every week. Start your free trial today — no credit card required.
+                  </p>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-[var(--v6-charcoal)] text-[var(--v6-cream)] px-8 py-4 v6-display text-base tracking-wider">
-                    Start 7-Day Free Trial
-                  </button>
-                  <button className="border-2 border-white/30 px-8 py-4 v6-display text-base tracking-wider">
-                    Book a Demo
-                  </button>
-                </div>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button className="bg-[var(--v6-charcoal)] text-[var(--v6-cream)] px-8 py-4 v6-display text-base tracking-wider hover:bg-[var(--v6-charcoal-light)] transition-colors">
+                      Start 7-Day Free Trial
+                    </button>
+                    <button className="border-2 border-white/30 px-8 py-4 v6-display text-base tracking-wider hover:bg-white/10 hover:border-white/50 transition-colors">
+                      Book a Demo
+                    </button>
+                  </div>
 
-                <div className="mt-10 flex flex-wrap gap-6 text-white/70 v6-mono text-sm">
-                  <span>No credit card</span>
-                  <span>30s setup</span>
-                  <span>Cancel anytime</span>
-                </div>
+                  <div className="mt-10 flex flex-wrap gap-6 text-white/70 v6-mono text-sm">
+                    <span>No credit card</span>
+                    <span>30s setup</span>
+                    <span>Cancel anytime</span>
+                  </div>
+                </Reveal>
               </div>
 
               <div className="order-first md:order-last">
-                <div className="bg-white/10 border border-white/20 aspect-[4/3] flex items-center justify-center relative">
-                  <div className="absolute -top-3 -left-3 w-full h-full border-2 border-white/20" />
-                  <span className="v6-display text-white/50 text-xl">App screenshot</span>
-                </div>
+                <Reveal delay={0.3}>
+                  <div className="bg-white/10 border border-white/20 aspect-[4/3] flex items-end justify-center relative">
+                    <div className="absolute -bottom-3 -left-3 w-full h-full border-2 border-white/20 flex items-end">
+                      <img
+                        src={handAsset}
+                        alt="Hand holding phone"
+                        className="w-full h-full object-contain scale-150 object-bottom"
+                      />
+                    </div>
+                    <span className="v6-display text-white/50 text-xl">App screenshot</span>
+                  </div>
+                </Reveal>
               </div>
             </div>
           </div>
@@ -616,17 +802,21 @@ export default function App() {
         <Section className="v6-section bg-[var(--v6-warm-white)]">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
-              <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
-                Support
-              </div>
-              <h2 className="v6-display text-3xl md:text-4xl">
-                FAQ
-              </h2>
+              <Reveal>
+                <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
+                  Support
+                </div>
+                <h2 className="v6-display text-3xl md:text-4xl">
+                  FAQ
+                </h2>
+              </Reveal>
             </div>
 
             <div className="space-y-6">
               {faqs.map((faq, index) => (
-                <FAQItem key={index} faq={faq} />
+                <Reveal key={index} delay={index * 0.1}>
+                  <FAQItem faq={faq} />
+                </Reveal>
               ))}
             </div>
           </div>
@@ -637,7 +827,7 @@ export default function App() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-[var(--v6-charcoal)] flex items-center justify-center">
-                <span className="v6-display text-[var(--v6-cream)] text-sm">M</span>
+                <img src={logoBrandBackground} alt="Mirepoix logo" className="w-full h-full object-contain" />
               </div>
               <span className="v6-display text-lg">Mirepoix</span>
             </div>
