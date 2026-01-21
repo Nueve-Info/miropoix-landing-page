@@ -8,7 +8,7 @@
  * - Asymmetric editorial layouts with industrial grid overlays
  */
 
-import { ListTodo, CheckCircle, Send, ArrowRight, Plus, Check } from "lucide-react";
+import { ListTodo, CheckCircle, Send, ArrowRight, Plus } from "lucide-react";
 import { useState } from "react";
 
 const styles = `
@@ -209,67 +209,6 @@ const faqs = [
   },
 ];
 
-// Shopping list component
-function ShoppingListMockup() {
-  const listItems = [
-    { text: 'Shallots — 2kg', checked: true },
-    { text: 'Butter — 5 blocks', checked: true },
-    { text: 'Heavy Cream — 4L', checked: false },
-  ];
-
-  return (
-    <div className="relative">
-      <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 aspect-[3/4] flex flex-col relative">
-        {/* Decorative offset border */}
-        <div className="absolute -top-3 -right-3 w-full h-full border-2 border-[var(--v6-charcoal)] -z-10" />
-
-        {/* Mock app header */}
-        <div className="border-b border-[var(--v6-border)] pb-4 mb-4">
-          <div className="v6-mono text-xs text-[var(--v6-muted)] mb-1">Today's Order</div>
-          <div className="v6-display text-lg">Supply List</div>
-        </div>
-
-        {/* List items */}
-        <div className="space-y-3 flex-1">
-          {listItems.map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-3 p-3 bg-[var(--v6-cream)] border border-[var(--v6-border)]"
-            >
-              <div className="w-5 h-5 border-2 border-[var(--v6-terracotta)] flex items-center justify-center relative">
-                {item.checked && (
-                  <div>
-                    <Check className="w-3 h-3 text-[var(--v6-terracotta)]" strokeWidth={3} />
-                  </div>
-                )}
-              </div>
-              <span className="v6-mono text-sm">{item.text}</span>
-            </div>
-          ))}
-
-          {/* Add item field */}
-          <div className="flex items-center gap-3 p-3 border border-dashed border-[var(--v6-border)] text-[var(--v6-muted)]">
-            <div>
-              <Plus className="w-4 h-4" />
-            </div>
-            <span className="v6-mono text-sm">
-              Add item
-              <span className="v6-cursor" />
-            </span>
-          </div>
-        </div>
-
-        {/* Send button */}
-        <div className="mt-4 pt-4 border-t border-[var(--v6-border)]">
-          <div className="bg-[var(--v6-terracotta)] text-white py-3 text-center v6-display text-sm tracking-wider relative overflow-hidden cursor-pointer">
-            Send to Supplier
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // Section wrapper
 function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
@@ -466,7 +405,36 @@ export default function App() {
 
                 {/* Right: App mockup */}
                 <div className="lg:col-span-5">
-                  <ShoppingListMockup />
+                  <div className="relative">
+                    <div className="bg-[var(--v6-warm-white)] border border-[var(--v6-border)] p-8 aspect-[3/4] flex flex-col relative">
+                      {/* Decorative offset border */}
+                      <div className="absolute -top-3 -right-3 w-full h-full border-2 border-[var(--v6-charcoal)] -z-10" />
+
+                      {/* Placeholder na zdjęcie/mockup telefonu */}
+                      <div className="flex-1 flex items-center justify-center border-2 border-dashed border-[var(--v6-border)] bg-[var(--v6-cream)] relative overflow-hidden">
+                        <div className="text-center p-8">
+                          <div className="w-16 h-16 mx-auto mb-4 border-2 border-[var(--v6-muted)] rounded-lg flex items-center justify-center">
+                            <svg 
+                              className="w-8 h-8 text-[var(--v6-muted)]" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24"
+                            >
+                              <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" 
+                              />
+                            </svg>
+                          </div>
+                          <div className="v6-mono text-sm text-[var(--v6-muted)]">
+                            Placeholder na zdjęcie<br/>mockupu telefonu
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
