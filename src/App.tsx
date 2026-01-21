@@ -162,7 +162,7 @@ const features = [
   },
   {
     title: "End the 6 AM emergency grocery run",
-    description: "Mirepoix alerts you if a staple is missing from your draft order. Catch forgotten shallots or butter before you've even started service.",
+    description: "Miropoix alerts you if a staple is missing from your draft order. Catch forgotten shallots or butter before you've even started service.",
     imageLabel: "Products suggestion",
     imagePosition: "left" as const,
   },
@@ -204,7 +204,7 @@ const plans = [
 const faqs = [
   {
     question: "I'm too busy to set up another app.",
-    answer: "Mirepoix is ready the moment you download it. No complex inventory spreadsheets to upload. Add your first supplier and item in 30 seconds.",
+    answer: "Miropoix is ready the moment you download it. No complex inventory spreadsheets to upload. Add your first supplier and item in 30 seconds.",
   },
   {
     question: "Is it really faster than what we do now?",
@@ -212,7 +212,7 @@ const faqs = [
   },
   {
     question: "What if my supplier only uses WhatsApp?",
-    answer: "Perfect. Mirepoix formats your order into a clean, professional WhatsApp message that they can read instantly. They don't need the app—only you do.",
+    answer: "Perfect. Miropoix formats your order into a clean, professional WhatsApp message that they can read instantly. They don't need the app—only you do.",
   },
 ];
 
@@ -491,9 +491,9 @@ export default function App() {
           <nav className="flex items-center justify-between py-3 px-4 md:px-8 lg:px-12 border-b border-[var(--v6-border)] bg-white">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-[var(--v6-charcoal)] flex items-center justify-center">
-                <img src={logoBrandBackground} alt="Mirepoix logo" className="w-full h-full object-contain" />
+                <img src={logoBrandBackground} alt="Miropoix logo" className="w-full h-full object-contain" />
               </div>
-              <span className="v6-display text-xl tracking-wide">Mirepoix</span>
+              <span className="v6-display text-xl tracking-wide">Miropoix</span>
             </div>
             <button
               className="bg-[var(--v6-terracotta)] text-white px-6 py-3 v6-display text-sm tracking-wider flex items-center gap-2 hover:bg-[var(--v6-terracotta-light)] transition-colors"
@@ -538,7 +538,7 @@ export default function App() {
                     </h1>
 
                     <p className="v6-serif text-lg md:text-xl text-[var(--v6-muted)] max-w-xl mb-6 leading-relaxed">
-                      Mirepoix is the supply management app that moves your kitchen from messy WhatsApp threads to a structured workflow.
+                      Miropoix is the supply management app that moves your kitchen from messy WhatsApp threads to a structured workflow.
                     </p>
 
                     {/* Social proof ticket */}
@@ -618,7 +618,7 @@ export default function App() {
                       Stop losing time on late night supply lists
                     </h3>
                     <p className="v6-serif text-[var(--v6-cream)]/70 text-lg leading-relaxed">
-                      The service is over, but you still need to order supplies. 11 PM is not the time to run around with pen and paper. Use Mirepoix.
+                      The service is over, but you still need to order supplies. 11 PM is not the time to run around with pen and paper. Use Miropoix.
                     </p>
                   </Reveal>
                 </div>
@@ -827,12 +827,12 @@ export default function App() {
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-[var(--v6-charcoal)] flex items-center justify-center">
-                <img src={logoBrandBackground} alt="Mirepoix logo" className="w-full h-full object-contain" />
+                <img src={logoBrandBackground} alt="Miropoix logo" className="w-full h-full object-contain" />
               </div>
-              <span className="v6-display text-lg">Mirepoix</span>
+              <span className="v6-display text-lg">Miropoix</span>
             </div>
             <div className="v6-mono text-sm text-[var(--v6-muted)]">
-              2025 Mirepoix. All rights reserved.
+              2025 Miropoix. All rights reserved.
             </div>
           </div>
         </footer>
