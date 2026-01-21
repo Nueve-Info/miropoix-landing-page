@@ -170,7 +170,7 @@ const features = [
 const plans = [
   {
     name: "SOLO",
-    price: "$9",
+    price: "$1",
     period: "/mo",
     description: "For the owner-operator",
     features: ["Unlimited Suppliers", "WhatsApp/Email Integration", "Basic Product Lists"],
@@ -178,7 +178,7 @@ const plans = [
   },
   {
     name: "SMALL TEAM",
-    price: "$29",
+    price: "$10",
     period: "/mo",
     description: "For standard bistro kitchens",
     features: ["Approval Workflows", "Up to 5 Staff Members", "Delivery Scheduling"],
@@ -186,7 +186,7 @@ const plans = [
   },
   {
     name: "LARGE TEAMS",
-    price: "$59",
+    price: "$30",
     period: "/mo",
     description: "For high-volume or multi-site",
     features: ["Advanced Price Alerts", "Unlimited Staff", "Full Invoice Archive"],
@@ -414,17 +414,17 @@ export default function App() {
                       <div className="flex-1 flex items-center justify-center border-2 border-dashed border-[var(--v6-border)] bg-[var(--v6-cream)] relative overflow-hidden">
                         <div className="text-center p-8">
                           <div className="w-16 h-16 mx-auto mb-4 border-2 border-[var(--v6-muted)] rounded-lg flex items-center justify-center">
-                            <svg 
-                              className="w-8 h-8 text-[var(--v6-muted)]" 
-                              fill="none" 
-                              stroke="currentColor" 
+                            <svg
+                              className="w-8 h-8 text-[var(--v6-muted)]"
+                              fill="none"
+                              stroke="currentColor"
                               viewBox="0 0 24 24"
                             >
-                              <path 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round" 
-                                strokeWidth={2} 
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" 
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
                               />
                             </svg>
                           </div>
