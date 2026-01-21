@@ -178,26 +178,41 @@ const plans = [
   {
     name: "SOLO",
     price: "$1",
+    priceValue: 1,
     period: "/mo",
     description: "For the owner-operator",
     features: ["Unlimited Suppliers", "WhatsApp/Email Integration", "Basic Product Lists"],
     popular: false,
+    planType: "solo",
+    billing: "monthly",
+    currency: "USD",
+    stripeUrl: "https://buy.stripe.com/[TUTAJLINKSTIRPE!!!]",
   },
   {
     name: "SMALL TEAM",
     price: "$10",
+    priceValue: 10,
     period: "/mo",
     description: "For standard bistro kitchens",
     features: ["Approval Workflows", "Up to 5 Staff Members", "Delivery Scheduling"],
     popular: true,
+    planType: "small team",
+    billing: "monthly",
+    currency: "USD",
+    stripeUrl: "https://buy.stripe.com/[TUTAJLINKSTIRPE!!!]",
   },
   {
     name: "LARGE TEAMS",
     price: "$30",
+    priceValue: 30,
     period: "/mo",
     description: "For high-volume or multi-site",
     features: ["Advanced Price Alerts", "Unlimited Staff", "Full Invoice Archive"],
     popular: false,
+    planType: "large teams",
+    billing: "monthly",
+    currency: "USD",
+    stripeUrl: "https://buy.stripe.com/[TUTAJLINKSTIRPE!!!]",
   },
 ];
 
@@ -383,6 +398,22 @@ function FeatureSection({ feature, index }: { feature: typeof features[0]; index
 
 // Pricing card component
 function PricingCard({ plan }: { plan: typeof plans[0] }) {
+  const handleSelectPlan = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'select_plan',
+      plan_type: plan.planType,
+      billing: plan.billing,
+      price: plan.priceValue,
+      currency: plan.currency
+    });
+
+    // Wait for GTM to capture event before redirecting to Stripe
+    setTimeout(() => {
+      window.location.href = plan.stripeUrl;
+    }, 200);
+  };
+
   return (
     <div
       className={`bg-[var(--v6-warm-white)] border p-8 relative ${
@@ -416,13 +447,20 @@ function PricingCard({ plan }: { plan: typeof plans[0] }) {
         ))}
       </ul>
       <button
-        className={`w-full py-4 v6-display text-sm tracking-wider transition-colors ${
+        type="button"
+        className={`js-select-plan w-full py-4 v6-display text-sm tracking-wider transition-colors ${
           plan.popular
             ? "bg-[var(--v6-terracotta)] text-white hover:bg-[var(--v6-terracotta-light)]"
             : "bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)] hover:bg-[var(--v6-charcoal)] hover:text-white"
         }`}
+        data-plan-type={plan.planType}
+        data-billing={plan.billing}
+        data-price={plan.priceValue}
+        data-currency={plan.currency}
+        data-stripe-url={plan.stripeUrl}
+        onClick={handleSelectPlan}
       >
-        Start free trial
+        START FREE TRIAL
       </button>
     </div>
   );
@@ -462,19 +500,110 @@ function FAQItem({ faq }: { faq: typeof faqs[0] }) {
   );
 }
 
-export default function App() {
-  // Load Vimeo player script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://player.vimeo.com/api/player.js';
-    script.async = true;
-    document.body.appendChild(script);
+// Declare global types for GTM
+declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[];
+    Vimeo?: {
+      Player: new (iframe: HTMLIFrameElement) => VimeoPlayer;
+    };
+  }
+}
 
-    return () => {
-      // Cleanup script on unmount
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
+interface VimeoPlayer {
+  getVideoId(): Promise<number>;
+  getVideoTitle(): Promise<string>;
+  getDuration(): Promise<number>;
+  getCurrentTime(): Promise<number>;
+  on(event: string, callback: (data?: { percent?: number; seconds?: number }) => void): void;
+}
+
+export default function App() {
+  // Initialize Vimeo tracking for GTM
+  useEffect(() => {
+    // Initialize dataLayer
+    window.dataLayer = window.dataLayer || [];
+
+    const initVimeoTracking = () => {
+      const THRESHOLDS = [10, 25, 50, 75];
+
+      const dlPush = (payload: Record<string, unknown>) => {
+        window.dataLayer.push(payload);
+      };
+
+      // Get all vimeo iframes on the page
+      const iframes = document.querySelectorAll('iframe[src*="player.vimeo.com/video/"]');
+      if (!iframes.length || !window.Vimeo || !window.Vimeo.Player) return;
+
+      iframes.forEach((iframe) => {
+        const player = new window.Vimeo!.Player(iframe as HTMLIFrameElement);
+
+        let started = false;
+        const fired = new Set<number>(); // thresholds per video
+
+        Promise.all([player.getVideoId(), player.getVideoTitle(), player.getDuration()])
+          .then(([videoId, title, duration]) => {
+            const base = {
+              video_provider: "vimeo",
+              video_id: String(videoId),
+              video_title: title,
+              video_duration: Math.round(duration || 0),
+            };
+
+            player.on("play", async () => {
+              if (started) return;
+              started = true;
+
+              const seconds = await player.getCurrentTime().catch(() => 0);
+              dlPush({
+                event: "video_start",
+                ...base,
+                video_seconds: Math.round(seconds || 0),
+              });
+            });
+
+            player.on("timeupdate", (data) => {
+              const percent = Math.floor((data?.percent || 0) * 100);
+
+              THRESHOLDS.forEach((t) => {
+                if (percent >= t && !fired.has(t)) {
+                  fired.add(t);
+                  dlPush({
+                    event: "video_progress",
+                    ...base,
+                    video_percent: t,
+                    video_seconds: Math.round(data?.seconds || 0),
+                  });
+                }
+              });
+            });
+
+            player.on("ended", () => {
+              dlPush({
+                event: "video_complete",
+                ...base,
+                video_percent: 100,
+              });
+            });
+          })
+          .catch((err) => {
+            console.warn("[vimeoTracking] init error", err);
+          });
+      });
+    };
+
+    // Wait for Vimeo API to load and iframes to be ready
+    const checkVimeo = setInterval(() => {
+      if (window.Vimeo && window.Vimeo.Player) {
+        clearInterval(checkVimeo);
+        // Small delay to ensure iframes are rendered
+        setTimeout(initVimeoTracking, 1000);
       }
+    }, 100);
+
+    // Cleanup
+    return () => {
+      clearInterval(checkVimeo);
     };
   }, []);
 
@@ -496,8 +625,18 @@ export default function App() {
               <span className="v6-display text-xl tracking-wide">Miropoix</span>
             </div>
             <button
+              type="button"
+              data-gtm="cta_click"
+              data-cta-type="start_trial"
+              data-cta-placement="nav"
               className="bg-[var(--v6-terracotta)] text-white px-6 py-3 v6-display text-sm tracking-wider flex items-center gap-2 hover:bg-[var(--v6-terracotta-light)] transition-colors"
               onClick={() => {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                  event: 'cta_click',
+                  cta_type: 'start_trial',
+                  cta_placement: 'nav'
+                });
                 const pricingSection = document.getElementById('pricing');
                 if (pricingSection) {
                   pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -548,10 +687,42 @@ export default function App() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <button className="bg-[var(--v6-terracotta)] text-white px-8 py-4 v6-display text-sm tracking-wider hover:bg-[var(--v6-terracotta-light)] transition-colors">
+                      <button
+                        type="button"
+                        data-gtm="cta_click"
+                        data-cta-type="start_trial"
+                        data-cta-placement="hero"
+                        className="bg-[var(--v6-terracotta)] text-white px-8 py-4 v6-display text-sm tracking-wider hover:bg-[var(--v6-terracotta-light)] transition-colors"
+                        onClick={() => {
+                          window.dataLayer = window.dataLayer || [];
+                          window.dataLayer.push({
+                            event: 'cta_click',
+                            cta_type: 'start_trial',
+                            cta_placement: 'hero'
+                          });
+                          const pricingSection = document.getElementById('pricing');
+                          if (pricingSection) {
+                            pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                      >
                         Start 7-Day Free Trial
                       </button>
-                      <button className="bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)] px-8 py-4 v6-display text-sm tracking-wider hover:bg-[var(--v6-charcoal)] hover:text-white transition-colors">
+                      <button
+                        type="button"
+                        data-gtm="cta_click"
+                        data-cta-type="book_demo"
+                        data-cta-placement="hero"
+                        className="bg-transparent text-[var(--v6-charcoal)] border-2 border-[var(--v6-charcoal)] px-8 py-4 v6-display text-sm tracking-wider hover:bg-[var(--v6-charcoal)] hover:text-white transition-colors"
+                        onClick={() => {
+                          window.dataLayer = window.dataLayer || [];
+                          window.dataLayer.push({
+                            event: 'cta_click',
+                            cta_type: 'book_demo',
+                            cta_placement: 'hero'
+                          });
+                        }}
+                      >
                         Book a Demo
                       </button>
                     </div>
@@ -764,10 +935,42 @@ export default function App() {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-[var(--v6-charcoal)] text-[var(--v6-cream)] px-8 py-4 v6-display text-base tracking-wider hover:bg-[var(--v6-charcoal-light)] transition-colors">
+                    <button
+                      type="button"
+                      data-gtm="cta_click"
+                      data-cta-type="start_trial"
+                      data-cta-placement="cta_section"
+                      className="bg-[var(--v6-charcoal)] text-[var(--v6-cream)] px-8 py-4 v6-display text-base tracking-wider hover:bg-[var(--v6-charcoal-light)] transition-colors"
+                      onClick={() => {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                          event: 'cta_click',
+                          cta_type: 'start_trial',
+                          cta_placement: 'cta_section'
+                        });
+                        const pricingSection = document.getElementById('pricing');
+                        if (pricingSection) {
+                          pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }}
+                    >
                       Start 7-Day Free Trial
                     </button>
-                    <button className="border-2 border-white/30 px-8 py-4 v6-display text-base tracking-wider hover:bg-white/10 hover:border-white/50 transition-colors">
+                    <button
+                      type="button"
+                      data-gtm="cta_click"
+                      data-cta-type="book_demo"
+                      data-cta-placement="cta_section"
+                      className="border-2 border-white/30 px-8 py-4 v6-display text-base tracking-wider hover:bg-white/10 hover:border-white/50 transition-colors"
+                      onClick={() => {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({
+                          event: 'cta_click',
+                          cta_type: 'book_demo',
+                          cta_placement: 'cta_section'
+                        });
+                      }}
+                    >
                       Book a Demo
                     </button>
                   </div>
