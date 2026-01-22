@@ -17,7 +17,7 @@ import dashboardMobilePortrait from "../assets/dashboard-mobile-portrait.png";
 import invoicePortrait from "../assets/incoice-portrait.png";
 import handAsset from "../assets/hand-asset.png";
 import logoBrandBackground from "../assets/logo-brand-background.svg";
-import heroAnimationVideo from "../assets/hero-animation (2).webm";
+import heroAnimationVideo from "../assets/hero-animation-transparent.webm";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -651,9 +651,9 @@ export default function App() {
           {/* Hero content */}
           <div className="flex-1 flex items-center px-4 md:px-8 lg:px-12 py-12 md:py-16">
             <div className="max-w-7xl mx-auto w-full">
-              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
                 {/* Left: Text */}
-                <div className="lg:col-span-6">
+                <div className="lg:col-span-5 flex flex-col">
                   <Reveal>
                     <div className="v6-mono text-xs uppercase tracking-widest text-[var(--v6-terracotta)] mb-4">
                       Kitchen Supply Management
@@ -731,25 +731,18 @@ export default function App() {
                 </div>
 
                 {/* Right: App mockup */}
-                <div className="lg:col-span-6">
-                  <Reveal delay={0.3}>
-                    <div className="relative">
+                <div className="lg:col-span-7 flex flex-col">
+                  <Reveal delay={0.3} className="flex-1 flex flex-col">
+                    <div className="relative lg:scale-125 lg:origin-center flex-1 flex items-center">
                       {/* Hero animation video */}
-                      <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
+                      <div className="w-full h-full relative">
                         <video
                           src={heroAnimationVideo}
                           autoPlay
                           muted
                           loop
                           playsInline
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover'
-                          }}
+                          className="w-full h-full object-contain object-center-top"
                           title="Hero animation"
                         />
                       </div>
