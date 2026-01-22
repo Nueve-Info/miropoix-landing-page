@@ -17,6 +17,7 @@ import dashboardMobilePortrait from "../assets/dashboard-mobile-portrait.png";
 import invoicePortrait from "../assets/incoice-portrait.png";
 import handAsset from "../assets/hand-asset.png";
 import logoBrandBackground from "../assets/logo-brand-background.svg";
+import heroAnimationVideo from "../assets/hero-animation (2).webm";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
@@ -733,21 +734,23 @@ export default function App() {
                 <div className="lg:col-span-6">
                   <Reveal delay={0.3}>
                     <div className="relative">
-                      {/* Vimeo video */}
+                      {/* Hero animation video */}
                       <div style={{ padding: '75% 0 0 0', position: 'relative' }}>
-                        <iframe
-                          src="https://player.vimeo.com/video/1156897711?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1"
-                          frameBorder="0"
-                          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                          referrerPolicy="strict-origin-when-cross-origin"
+                        <video
+                          src={heroAnimationVideo}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
                           style={{
                             position: 'absolute',
                             top: 0,
                             left: 0,
                             width: '100%',
-                            height: '100%'
+                            height: '100%',
+                            objectFit: 'cover'
                           }}
-                          title="Dribbble-shot"
+                          title="Hero animation"
                         />
                       </div>
                     </div>
